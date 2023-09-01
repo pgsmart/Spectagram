@@ -1,12 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View ,FlatList} from 'react-native';
 import * as React from 'react'
+import PostCard from '../PostCard';
 
-export default class CreateStory extends React.Component{
+export default class Feed extends React.Component{
+
+
     render(){
+      
         return (
-            <View>
-                <Text>Feed Screen</Text>
+            <View style={{backgroundColor:'black'}}>
+               <PostCard/>
             </View>
         );
     }
