@@ -14,7 +14,9 @@ export default class Feed extends React.Component{
   constructor(){
     super();
     this.state = {
-      fontsLoaded: false
+      fontsLoaded: false,
+      post_id: this.props.post.key,
+      post_data: this.props.post.value
     }
   }
 

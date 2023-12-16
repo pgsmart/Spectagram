@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image,TextInput,ScrollView} from 'react-native';
+import { StyleSheet, Text, View, Image,TextInput,ScrollView,TouchableOpacity,Alert} from 'react-native';
 import * as React from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
 
@@ -9,7 +9,30 @@ export default class CreateStory extends React.Component{
     this.state = {
       open: false,
       value: 'image_1',
-      finalImg: require('../assets/image_1.jpg')
+      finalImg: require('../assets/image_1.jpg'),
+      caption: ''
+    }
+  }
+
+  async createPost(){
+    if(this.state.caption){
+      var postData = {
+        preview_image: this.state.finalImg,
+        caption: this.state.caption, 
+        author: firebase.auth().currentUser.displayName,
+        created_on: new Date(),
+        author_uid: firebase.auth().currentUser.uid,
+        profile_image: this.state.profile_image,
+        likes: 0
+      }
+      await firebase
+        .database().ref('/posts/' + Math.random().toString(36).slice(2))
+        .set(postData)
+        .then(()=>{
+          this.props.navigation.navigate('Feed')
+        })
+    }else{
+      Alert.alert('All fields are required!')
     }
   }
   
@@ -65,6 +88,7 @@ export default class CreateStory extends React.Component{
               <ScrollView style={{flex:1,width:'90%',marginTop:20}}>
                 <TextInput numberOfLines={4} multiline placeholder='Enter Caption...' placeholderTextColor={'white'} style={{color:'white',borderWidth:2,borderColor:'white',width:'100%',height:40,borderRadius:20,paddingLeft:10}}></TextInput>
               </ScrollView>
+              <TouchableOpacity onPress={()=>{this.createPost()}}><Text>Submit</Text></TouchableOpacity>
             </View>
         );
     }
